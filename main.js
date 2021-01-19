@@ -2,37 +2,35 @@
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
-let glyphStates = {
-  "♡": "♥",
-  "♥": "♡"
-};
+// Your JavaScript code goes here!
 
-let colorStates = {
-  "red" : "",
-  "": "red"
-};
+let theLikes = document.querySelectorAll(".like");
 
-let articleHearts = document.querySelectorAll(".like");
 
-function likeCallback(e) {
-  let heart = e.target;
-  mimicServerCall("bogusUrl")
-   //OR: mimicServerCall("bogusUrl", {forceFailure: true})
-    .then(function(serverMessage){
-       heart.innerText = glyphStates[heart.innerText];
-       heart.style.color = colorStates[heart.style.color];
-    })
-    .catch(function(error) {
-      // Basic
-      // alert("Something went wrong!");
-      // or....
-      document.getElementById("modal").className = "";
-    });
+function likeCallBack(evt){
+  let thisLike  = evt.target;
+
+     mimicServerCall().then((ok) => {
+        thisLike.classList.add('activated-heart');
+        thisLike.querySelector('span').innerText = FULL_HEART;
+
+
+     }).catch( (error) => {
+        let theModal =  document.querySelector('#modal');
+        theModal.classList.remove('hidden');
+        setTimeout( function(){
+          theModal.classList.add('hidden');
+        },5000);
+
+     });
+
 }
 
-for (let glyph of articleHearts) {
-  glyph.addEventListener("click", likeCallback);
+for ( let e of theLikes) {
+  e.addEventListener('click', likeCallBack );
 }
+
+
 
 
 //------------------------------------------------------------------------------
