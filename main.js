@@ -3,9 +3,28 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+let likes = document.querySelectorAll(".like");
 
 
+for (let like of likes) {
+  like.addEventListener("click", likeCallback);
+}
 
+function likeCallback(e){
+ let heart = e.target;
+ mimicServerCall()
+ .then(()=>{
+   if( heart.innerText == EMPTY_HEART)
+        {heart.innerText= FULL_HEART;
+          heart.classList.add("activated-heart");}
+    else {heart.innerText= EMPTY_HEART;
+       heart.classList.remove("activated-heart");
+    }
+ })
+ .catch((error)=>{
+     document.getElementById("modal").className = "";
+ });
+}
 
 //------------------------------------------------------------------------------
 // Ignore after this point. Used only for demo purposes
